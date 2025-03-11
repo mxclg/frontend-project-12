@@ -1,10 +1,11 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChannels } from "../slices/channelsSlice";
-import { Button, Container, Row, Col } from 'react-bootstrap';
-import useAuth from "../hooks/useAuth";
-import LogoutButton from "./LogoutButton";
-import BuildPage from "./Pages";
+import { fetchChannels } from "../../slices/channelsSlice";
+import useAuth from "../../hooks/useAuth";
+import LogoutButton from "../common/LogoutButton";
+import BuildPage from "../NotFound/Pages";
 
 const HomePage = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,6 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from "react-bootstrap";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const LogoutButton = () => {
   const { logOut } = useAuth();

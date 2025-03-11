@@ -1,10 +1,11 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form, Button } from "react-bootstrap";
 import { useState, useRef } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Form, Button } from "react-bootstrap";
-import useAuth from "../hooks/useAuth";
-import LogoutButton from "../components/LogoutButton";
+import useAuth from "../../hooks/useAuth";
+import LogoutButton from "../common/LogoutButton";
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
