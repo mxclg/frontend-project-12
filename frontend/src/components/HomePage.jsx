@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChannels } from "../channelsSlice"; 
+import { fetchChannels } from "../slices/channelsSlice";
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import useAuth from "../hooks/useAuth";
 import LogoutButton from "./LogoutButton";
