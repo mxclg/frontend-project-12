@@ -1,5 +1,5 @@
 const routes = {
-    homePage: () => '/',
+    chatPage: () => '/',
     loginPage: () => '/login',
     notFoundPage: () => '*',
   };

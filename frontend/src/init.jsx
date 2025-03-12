@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './slices/index.js';
 import { AuthProvider } from './contexts/AuthContext.jsx';
-import App from "./App.jsx";
+import App from "./components/App.jsx"
 
 const init = () => (
   <Provider store={store}>
