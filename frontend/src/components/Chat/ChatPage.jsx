@@ -3,6 +3,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChannels } from "../../slices/channelsSlice";
+import { fetchMessages } from "../../slices/messagesSlice";
 import Channels from "./chatComponents/Channels";
 import MessagesList from "./chatComponents/MessagesList";
 import useAuth from "../../hooks/useAuth";
@@ -17,6 +18,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (loggedIn) {
       dispatch(fetchChannels());
+      dispatch(fetchMessages()); // Загружаем историю сообщений
     }
   }, [loggedIn, dispatch]);
 

@@ -1,5 +1,3 @@
-
-
 import React from "react";
 
 const MessagesBody = ({ messages }) => {
@@ -10,7 +8,7 @@ const MessagesBody = ({ messages }) => {
       ) : (
         <ul className="list-unstyled">
           {messages.map(({ id, body, username }) => (
-            <li key={id} className="mb-2">
+            <li key={`${id}-${username}-${body.slice(0, 5)}`} className="mb-2">
               <strong>{username}:</strong> {body}
             </li>
           ))}
