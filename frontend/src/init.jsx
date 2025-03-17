@@ -32,7 +32,7 @@ const SocketEventsHandler = () => {
       store.dispatch(
         channelsActions.renameChannel({
           id: payload.id,
-          name: payload.name,
+          changes: { name: payload.name },
         })
       );
     });

@@ -21,33 +21,6 @@ const Channels = () => {
     dispatch(fetchChannels());
   }, [dispatch]);
 
-  useEffect(() => {
-    const socket = io();
-
-    socket.on('newChannel', (payload) => {
-      console.log('WebSocket received newChannel:', payload);
-      dispatch(customSelectors.addChannel(payload));
-    });
-
-    socket.on('removeChannel', (payload) => {
-      console.log('WebSocket received removeChannel:', payload);
-      dispatch(customSelectors.removeChannel(payload.id));
-    });
-
-    socket.on('renameChannel', (payload) => {
-      console.log('Rename event payload:', payload);
-      dispatch(
-        customSelectors.renameChannel({
-          id: payload.id,
-          changes: { name: payload.name },
-        })
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [dispatch]);
 
   const isModalOpen = useSelector(modalSelectors.isModalOpen);
   const modalType = useSelector(modalSelectors.getModalType);
@@ -62,11 +35,7 @@ const Channels = () => {
   };
 
   const handleAddChannel = () => {
-    const socket = io();
-    const newChannel = { name: 'Новый канал' };
-    console.log('Отправка события newChannel:', newChannel);
-    socket.emit('newChannel', newChannel);
-    handleOpenModal('addChannel');
+  handleOpenModal('addChannel');
   };
   
   const handleOpenRemoveModal = (channel) => handleOpenModal('removeChannel', channel);
