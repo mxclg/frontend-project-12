@@ -1,17 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-export const fetchMessages = createAsyncThunk('messages/fetchMessages', async (channelId) => {
-  const token = localStorage.getItem('userId');
-  const parsedToken = JSON.parse(token).token;
-
-  const response = await axios.get(`/api/v1/messages?channelId=${channelId}`, {
-    headers: {
-      Authorization: `Bearer ${parsedToken}`,
-    },
-  });
-  return response.data;
-});
+import { fetchMessages } from './fetchData';
+import { createSelector } from 'reselect';
 
 export const sendMessage = createAsyncThunk('messages/sendMessage', async ({ message, socket }) => {
   const token = localStorage.getItem('userId');
@@ -23,30 +13,28 @@ export const sendMessage = createAsyncThunk('messages/sendMessage', async ({ mes
     },
   });
 
-  // Отправляем сообщение через WebSocket
   socket.emit('newMessage', response.data);
 
   return response.data;
 });
 
-const initialState = {
-  messages: [],
+const messagesAdapter = createEntityAdapter();
+const initialState = messagesAdapter.getInitialState({
   loading: false,
   error: null,
-};
+});
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    addMessages: (state, action) => {
-      state.messages.push(...action.payload);
-    },
-    addMessage: (state, action) => {
-      state.messages.push(action.payload);
-    },
-    removeMessagesByChannelId: (state, action) => {
-      state.messages = state.messages.filter((m) => m.channelId !== action.payload);
+    addMessages: messagesAdapter.addMany,
+    addMessage: messagesAdapter.addOne,
+    removeMessagesByChannelId: (state, { payload }) => {
+      const messagesToRemove = Object.values(state.entities)
+        .filter((msg) => msg.channelId === payload)
+        .map((msg) => msg.id);
+      messagesAdapter.removeMany(state, messagesToRemove);
     },
   },
   extraReducers: (builder) => {
@@ -57,7 +45,7 @@ const messagesSlice = createSlice({
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages = action.payload;
+        messagesAdapter.setAll(state, action.payload);
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
@@ -68,4 +56,15 @@ const messagesSlice = createSlice({
 
 export const { addMessages, addMessage, removeMessagesByChannelId } = messagesSlice.actions;
 export const actions = messagesSlice.actions;
+export const selectors = messagesAdapter.getSelectors((state) => state.messages);
 export default messagesSlice.reducer;
+
+export const customSelectors = {
+  allMessages: selectors.selectAll,
+  currentChannelMessages: createSelector(
+    [selectors.selectAll, (state) => state.channels.currentChannelId],
+    (allMessages, currentChannelId) => allMessages.filter(
+      ({ channelId }) => channelId === currentChannelId,
+    ),
+  ),
+};

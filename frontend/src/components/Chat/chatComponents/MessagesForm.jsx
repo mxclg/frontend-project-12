@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../../slices/messagesSlice";
+import { fetchMessages } from '../../../slices/fetchData';
 import { io } from "socket.io-client";
 
 const MessagesForm = () => {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -18,6 +20,12 @@ const MessagesForm = () => {
       newSocket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (currentChannelId) {
+      dispatch(fetchMessages(currentChannelId));
+    }
+  }, [dispatch, currentChannelId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
