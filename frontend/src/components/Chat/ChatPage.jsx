@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Channels from "./chatComponents/Channels";
 import MessagesList from "./chatComponents/MessagesList";

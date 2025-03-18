@@ -15,10 +15,15 @@ const Add = ({ show, handleClose }) => {
       .required('Обязательное поле'),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    const newChannel = { id: Date.now(), name: values.name };
-    dispatch(addChannel(newChannel));
-    dispatch(changeChannel(newChannel.id));
+  const handleSubmit = async (values, { setSubmitting }) => {
+    console.log('Форма добавления канала отправлена:', values.name); // Добавь этот лог
+    try {
+      const newChannel = { name: values.name };
+      const response = await dispatch(addChannel(newChannel)).unwrap();
+      dispatch(changeChannel(response.id));
+    } catch (error) {
+      console.error("Ошибка добавления канала:", error);
+    }
     setSubmitting(false);
     handleClose();
   };

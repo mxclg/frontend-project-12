@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +21,7 @@ const MessagesForm = () => {
 
   useEffect(() => {
     if (currentChannelId) {
+      console.log("Текущий канал в MessagesForm:", currentChannelId);
       dispatch(fetchMessages(currentChannelId));
     }
   }, [dispatch, currentChannelId]);
@@ -30,6 +29,7 @@ const MessagesForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim() && socket) {
+      console.log("Отправка сообщения в канал:", currentChannelId, "Сообщение:", message);
       dispatch(sendMessage({ message: { body: message, username: "Вы" }, socket }));
       setMessage("");
     }

@@ -2,25 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { Button, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { Add, Remove, Rename } from '../../common/modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions, selectors as modalSelectors } from '../../../slices/modalSlice';
 import { customSelectors } from '../../../slices/channelsSlice';
 import { fetchChannels } from '../../../slices/fetchData';
-import { useDispatch } from 'react-redux';
+import { addChannel } from '../../../slices/channelsSlice';
 
 const Channels = () => {
+  console.log("Channels re-render");
+
   const channels = useSelector(customSelectors.allChannels);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.channels.loading);
   const error = useSelector(state => state.channels.error);
+  const currentChannelId = useSelector(state => state.channels.currentChannelId);
+
+  console.log("Current Channel ID:", currentChannelId);
 
   useEffect(() => {
+    console.log("Список каналов обновлён:", channels);
   }, [channels]);
 
   useEffect(() => {
+    console.log("Запрос на загрузку каналов");
     dispatch(fetchChannels());
   }, [dispatch]);
-
 
   const isModalOpen = useSelector(modalSelectors.isModalOpen);
   const modalType = useSelector(modalSelectors.getModalType);
@@ -34,12 +40,24 @@ const Channels = () => {
     dispatch(modalActions.close());
   };
 
-  const handleAddChannel = () => {
-  handleOpenModal('addChannel');
+  const handleAddChannel = async (values, { setSubmitting }) => {
+    try {
+      const newChannel = { name: values.name };
+      const response = await dispatch(addChannel(newChannel)).unwrap();
+      dispatch(changeChannel(response.id)); // Переключаемся на новый канал
+    } catch (error) {
+      console.error("Ошибка добавления канала:", error);
+    }
+    setSubmitting(false);
+    handleCloseModal();
   };
   
   const handleOpenRemoveModal = (channel) => handleOpenModal('removeChannel', channel);
-  const handleOpenRenameModal = (channel) => handleOpenModal('renameChannel', channel);
+  const handleOpenRenameModal = (channel) => {
+    console.log("Попытка переименования канала:", channel);
+    console.log("Выбранный канал:", modalContext);
+    handleOpenModal('renameChannel', channel);
+  };
 
   const isSystemChannel = (channel) => ['general', 'random'].includes(channel.name);
 
@@ -47,7 +65,7 @@ const Channels = () => {
     <Col xs={4} md={2} className="border-end p-0 bg-light d-flex flex-column">
       <div className="d-flex justify-content-between align-items-center p-4">
         <h5>Каналы</h5>
-        <Button onClick={handleAddChannel} variant="outline-primary">
+        <Button onClick={() => handleOpenModal('addChannel')} variant="outline-primary">
           Добавить
         </Button>
       </div>
@@ -60,7 +78,11 @@ const Channels = () => {
           <ul className="list-unstyled">
             {channels.map(channel => (
               <li key={channel.id} className="p-2 d-flex justify-content-between align-items-center">
-                <Button variant="link" className="w-100 text-start">
+                <Button 
+                  variant="link" 
+                  className="w-100 text-start"
+                  onClick={() => console.log(`Channel selected: ${channel.id}`)}
+                >
                   #{channel.name}
                 </Button>
                 {!isSystemChannel(channel) && (

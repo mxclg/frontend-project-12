@@ -1,5 +1,3 @@
-
-
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchChannels, fetchMessages } from './fetchData';
 

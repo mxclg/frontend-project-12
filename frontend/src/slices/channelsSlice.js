@@ -1,6 +1,19 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { fetchChannels } from './fetchData';
+import axios from 'axios';
+
+export const addChannel = createAsyncThunk('channels/addChannel', async (channel) => {
+  console.log('Sending request to add channel:', channel.name); // Добавь этот лог
+  const token = localStorage.getItem('userId');
+  const parsedToken = JSON.parse(token).token;
+
+  const response = await axios.post('/api/v1/channels', channel, {
+    headers: { Authorization: `Bearer ${parsedToken}` },
+  });
+
+  return response.data;
+});
 
 const channelsAdapter = createEntityAdapter();
 const initialState = channelsAdapter.getInitialState({
@@ -14,9 +27,12 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannels: channelsAdapter.setAll,
-    addChannel: channelsAdapter.addOne,
     renameChannel: (state, { payload }) => {
       console.log('Before renaming:', state.entities[payload.id]);
+      if (!state.entities[payload.id]) {
+        console.warn(`Channel with id ${payload.id} not found!`);
+        return;
+      }
       const { id, changes } = payload;
       channelsAdapter.updateOne(state, { id, changes });
       console.log('After renaming:', state.entities[payload.id]);
@@ -45,11 +61,14 @@ const channelsSlice = createSlice({
       .addCase(fetchChannels.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(addChannel.fulfilled, (state, action) => {
+        channelsAdapter.addOne(state, action.payload);
       });
   },
 });
 
-export const { setChannels, addChannel, renameChannel, removeChannel, changeChannel } = channelsSlice.actions;
+export const { setChannels, renameChannel, removeChannel, changeChannel } = channelsSlice.actions;
 export const actions = channelsSlice.actions;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;
