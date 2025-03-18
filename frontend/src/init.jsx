@@ -5,7 +5,7 @@ import store from './slices/store.js';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import App from "./components/App.jsx";
 import { actions as messagesActions } from './slices/messagesSlice.js';
-import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
+import { actions as channelsActions } from './slices/channelsSlice.js';
 
 const SocketEventsHandler = () => {
   const socketRef = useRef(null);
@@ -26,7 +26,7 @@ const SocketEventsHandler = () => {
       const state = store.getState();
       if (!state.channels.entities[payload.id]) {
         console.log('Adding new channel:', payload.name);
-        store.dispatch(addChannel(payload));
+        store.dispatch(channelsActions.addChannelDirectly(payload));
       } else {
         console.log('Channel already exists, skipping:', payload.name);
       }

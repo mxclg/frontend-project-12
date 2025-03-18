@@ -4,7 +4,7 @@ import { fetchChannels } from './fetchData';
 import axios from 'axios';
 
 export const addChannel = createAsyncThunk('channels/addChannel', async (channel) => {
-  console.log('Sending request to add channel:', channel.name); // Добавь этот лог
+  console.log('Sending request to add channel:', channel.name);
   const token = localStorage.getItem('userId');
   const parsedToken = JSON.parse(token).token;
 
@@ -15,7 +15,9 @@ export const addChannel = createAsyncThunk('channels/addChannel', async (channel
   return response.data;
 });
 
-const channelsAdapter = createEntityAdapter();
+// ✅ Добавляем экспорт `channelsAdapter`
+export const channelsAdapter = createEntityAdapter();
+
 const initialState = channelsAdapter.getInitialState({
   currentChannelId: null,
   loading: false,
@@ -27,6 +29,7 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannels: channelsAdapter.setAll,
+    addChannelDirectly: channelsAdapter.addOne, // ✅ Новый reducer
     renameChannel: (state, { payload }) => {
       console.log('Before renaming:', state.entities[payload.id]);
       if (!state.entities[payload.id]) {
@@ -71,7 +74,9 @@ const channelsSlice = createSlice({
 export const { setChannels, renameChannel, removeChannel, changeChannel } = channelsSlice.actions;
 export const actions = channelsSlice.actions;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
+
 export default channelsSlice.reducer;
+
 export const customSelectors = {
   allChannels: selectors.selectAll,
   channelsNames: createSelector(
