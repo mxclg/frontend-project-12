@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { renameChannel } from '../../../slices/channelsSlice';
+import { renameChannel } from '../../../slices/fetchData';
 
 const Rename = ({ show, handleClose, channel }) => {
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (show && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [show]);
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -15,11 +22,15 @@ const Rename = ({ show, handleClose, channel }) => {
       .required('Обязательное поле'),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     if (channel) {
-      dispatch(renameChannel({ id: channel.id, changes: { name: values.name } }));
+      try {
+        await dispatch(renameChannel({ id: channel.id, name: values.name })).unwrap();
+        handleClose();
+      } catch (error) {
+        console.error("Ошибка при переименовании канала:", error);
+      }
       setSubmitting(false);
-      handleClose();
     }
   };
 
@@ -43,6 +54,7 @@ const Rename = ({ show, handleClose, channel }) => {
                   name="name"
                   className="form-control"
                   placeholder="Введите новое имя"
+                  innerRef={inputRef} // ✅ Автофокус
                 />
                 <ErrorMessage name="name" component="div" className="text-danger" />
               </Form.Group>

@@ -6,6 +6,8 @@ import { AuthProvider } from './contexts/AuthContext.jsx';
 import App from "./components/App.jsx";
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
+import { removeChannel } from './slices/fetchData.js';
+import { renameChannel } from './slices/fetchData.js';
 
 const SocketEventsHandler = () => {
   const socketRef = useRef(null);
@@ -22,25 +24,21 @@ const SocketEventsHandler = () => {
     });
 
     socket.on('newChannel', (payload) => {
-      console.log('WebSocket: newChannel event received:', payload);
       const state = store.getState();
       if (!state.channels.entities[payload.id]) {
-        console.log('Adding new channel:', payload.name);
         store.dispatch(channelsActions.addChannelDirectly(payload));
       } else {
-        console.log('Channel already exists, skipping:', payload.name);
       }
     });
 
-    socket.on('removeChannel', (payload) => {
-      store.dispatch(removeChannel(payload.id));
-      store.dispatch(messagesActions.removeMessagesByChannelId(payload.id));
-    });
-
     socket.on('renameChannel', (payload) => {
-      store.dispatch(renameChannel({ id: payload.id, changes: { name: payload.name } }));
+      store.dispatch(channelsActions.renameChannelDirectly({ id: payload.id, changes: { name: payload.name } }));
     });
-
+    
+    socket.on('removeChannel', (payload) => {
+      store.dispatch(channelsActions.removeChannelDirectly(payload.id)); // ✅ Только обновляем Redux
+    });
+    
     return () => {
       socket.off('newChannel');
       socket.off('newMessage');

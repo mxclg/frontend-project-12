@@ -1,13 +1,12 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { removeChannel } from '../../../slices/channelsSlice';
+import { removeChannel } from '../../../slices/fetchData';
 
 const Remove = ({ show, handleClose, channel }) => {
   const dispatch = useDispatch();
 
   const handleRemove = () => {
-    console.log("Удаление канала:", channel);
     if (channel) {
       dispatch(removeChannel(channel.id));
       handleClose();

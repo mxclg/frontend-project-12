@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
@@ -7,6 +7,13 @@ import { addChannel, changeChannel } from '../../../slices/channelsSlice';
 
 const Add = ({ show, handleClose }) => {
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (show && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [show]);
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -16,7 +23,6 @@ const Add = ({ show, handleClose }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('Форма добавления канала отправлена:', values.name); // Добавь этот лог
     try {
       const newChannel = { name: values.name };
       const response = await dispatch(addChannel(newChannel)).unwrap();
@@ -48,6 +54,7 @@ const Add = ({ show, handleClose }) => {
                   name="name"
                   className="form-control"
                   placeholder="Введите имя канала"
+                  innerRef={inputRef} // ✅ Добавлен autoFocus
                 />
                 <ErrorMessage name="name" component="div" className="text-danger" />
               </Form.Group>

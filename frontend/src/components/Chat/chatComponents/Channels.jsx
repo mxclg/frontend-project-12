@@ -9,22 +9,17 @@ import { fetchChannels } from '../../../slices/fetchData';
 import { addChannel } from '../../../slices/channelsSlice';
 
 const Channels = () => {
-  console.log("Channels re-render");
-
-  const channels = useSelector(customSelectors.allChannels);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.channels.loading);
   const error = useSelector(state => state.channels.error);
   const currentChannelId = useSelector(state => state.channels.currentChannelId);
-
-  console.log("Current Channel ID:", currentChannelId);
+  const channels = useSelector(customSelectors.allChannels);
 
   useEffect(() => {
-    console.log("Список каналов обновлён:", channels);
+
   }, [channels]);
 
   useEffect(() => {
-    console.log("Запрос на загрузку каналов");
     dispatch(fetchChannels());
   }, [dispatch]);
 
@@ -54,8 +49,6 @@ const Channels = () => {
   
   const handleOpenRemoveModal = (channel) => handleOpenModal('removeChannel', channel);
   const handleOpenRenameModal = (channel) => {
-    console.log("Попытка переименования канала:", channel);
-    console.log("Выбранный канал:", modalContext);
     handleOpenModal('renameChannel', channel);
   };
 

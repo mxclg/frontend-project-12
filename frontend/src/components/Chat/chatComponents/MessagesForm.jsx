@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../../slices/messagesSlice";
@@ -10,6 +10,7 @@ const MessagesForm = () => {
   const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const [socket, setSocket] = useState(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const newSocket = io();
@@ -21,15 +22,19 @@ const MessagesForm = () => {
 
   useEffect(() => {
     if (currentChannelId) {
-      console.log("Текущий канал в MessagesForm:", currentChannelId);
       dispatch(fetchMessages(currentChannelId));
     }
   }, [dispatch, currentChannelId]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim() && socket) {
-      console.log("Отправка сообщения в канал:", currentChannelId, "Сообщение:", message);
       dispatch(sendMessage({ message: { body: message, username: "Вы" }, socket }));
       setMessage("");
     }
@@ -39,6 +44,7 @@ const MessagesForm = () => {
     <Form onSubmit={handleSubmit} className="p-3 border-top">
       <InputGroup>
         <Form.Control
+          ref={inputRef}
           type="text"
           placeholder="Введите сообщение..."
           value={message}

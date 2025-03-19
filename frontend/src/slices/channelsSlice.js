@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { fetchChannels } from './fetchData';
+import { fetchChannels, renameChannel, removeChannel } from './fetchData';
 import axios from 'axios';
 
 export const addChannel = createAsyncThunk('channels/addChannel', async (channel) => {
-  console.log('Sending request to add channel:', channel.name);
   const token = localStorage.getItem('userId');
   const parsedToken = JSON.parse(token).token;
 
@@ -29,17 +28,9 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannels: channelsAdapter.setAll,
-    addChannelDirectly: channelsAdapter.addOne, // ✅ Новый reducer
-    renameChannel: (state, { payload }) => {
-      console.log('Before renaming:', state.entities[payload.id]);
-      if (!state.entities[payload.id]) {
-        console.warn(`Channel with id ${payload.id} not found!`);
-        return;
-      }
-      const { id, changes } = payload;
-      channelsAdapter.updateOne(state, { id, changes });
-      console.log('After renaming:', state.entities[payload.id]);
-    },
+    addChannelDirectly: channelsAdapter.addOne,
+    renameChannelDirectly: channelsAdapter.updateOne,
+    removeChannelDirectly: channelsAdapter.removeOne, // ✅ Добавляем локальное удаление
     removeChannel: (state, { payload }) => {
       if (state.currentChannelId === payload) {
         state.currentChannelId = state.ids.length > 0 ? state.ids[0] : null;
@@ -67,11 +58,17 @@ const channelsSlice = createSlice({
       })
       .addCase(addChannel.fulfilled, (state, action) => {
         channelsAdapter.addOne(state, action.payload);
+      })
+      .addCase(renameChannel.fulfilled, (state, { payload }) => {
+        channelsAdapter.updateOne(state, { id: payload.id, changes: { name: payload.name } });
+      })
+      .addCase(removeChannel.fulfilled, (state, { payload }) => {
+        channelsAdapter.removeOne(state, payload);
       });
   },
 });
 
-export const { setChannels, renameChannel, removeChannel, changeChannel } = channelsSlice.actions;
+export const { setChannels, changeChannel } = channelsSlice.actions;
 export const actions = channelsSlice.actions;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 
