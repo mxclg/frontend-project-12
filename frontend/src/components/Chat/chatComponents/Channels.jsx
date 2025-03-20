@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { customSelectors, changeChannel } from '../../../slices/channelsSlice';
 import { io } from 'socket.io-client';
 import { Button, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { Add, Remove, Rename } from '../../common/modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions, selectors as modalSelectors } from '../../../slices/modalSlice';
-import { customSelectors } from '../../../slices/channelsSlice';
 import { fetchChannels } from '../../../slices/fetchData';
 import { addChannel } from '../../../slices/channelsSlice';
 
@@ -72,12 +72,15 @@ const Channels = () => {
             {channels.map(channel => (
               <li key={channel.id} className="p-2 d-flex justify-content-between align-items-center">
                 <Button 
-                  variant="link" 
-                  className="w-100 text-start"
-                  onClick={() => console.log(`Channel selected: ${channel.id}`)}
-                >
-                  #{channel.name}
-                </Button>
+  variant="link" 
+  className="w-100 text-start"
+  onClick={() => {
+    dispatch(changeChannel(channel.id));
+    console.log(`Channel changed to: ${channel.id}`);
+  }}
+>
+  #{channel.name}
+</Button>
                 {!isSystemChannel(channel) && (
                   <Dropdown as={ButtonGroup}>
                     <Dropdown.Toggle split variant="light" id={`dropdown-${channel.id}`} />

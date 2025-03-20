@@ -32,10 +32,34 @@ const MessagesForm = () => {
     }
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim() && socket) {
-      dispatch(sendMessage({ message: { body: message, username: "Вы" }, socket }));
+      const newMessage = {
+        body: message,
+        username: "Вы",
+        channelId: currentChannelId
+      };
+  
+      try {
+        const token = JSON.parse(localStorage.getItem('userId')).token;
+        const response = await fetch('/api/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newMessage),
+        });
+        
+        const data = await response.json();
+        console.log("Ответ сервера:", data);
+        
+        dispatch(sendMessage(data)); // Обновляем Redux
+      } catch (error) {
+        console.error("Ошибка при отправке сообщения:", error);
+      }
+  
       setMessage("");
     }
   };

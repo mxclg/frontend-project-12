@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { customSelectors } from "../../../slices/messagesSlice";
 
 const MessagesBody = () => {
-  const messages = useSelector(customSelectors.allMessages);
+  const messages = useSelector((state) => customSelectors.currentChannelMessages(state));
 
   return (
     <div className="flex-grow-1 bg-light p-4">

@@ -29,14 +29,15 @@ export const removeChannel = createAsyncThunk('channels/removeChannel', async (i
   return id;
 });
 
-export const fetchMessages = createAsyncThunk('messages/fetchMessages', async (channelId) => {
+export const fetchMessages = createAsyncThunk('messages/fetchMessages', async () => {
   const token = localStorage.getItem('userId');
   const parsedToken = JSON.parse(token).token;
 
-  const response = await axios.get(`/api/v1/messages?channelId=${channelId}`, {
-    headers: {
-      Authorization: `Bearer ${parsedToken}`,
-    },
+  const response = await axios.get('/api/v1/messages', {
+    headers: { Authorization: `Bearer ${parsedToken}` },
   });
+
+  console.log("Fetched messages:", response.data); // Логируем ответ сервера
+
   return response.data;
 });

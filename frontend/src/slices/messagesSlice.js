@@ -1,40 +1,28 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { fetchMessages } from './fetchData';
-import { createSelector } from 'reselect';
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { fetchMessages } from "./fetchData";
+import { createSelector } from "reselect";
 
-export const sendMessage = createAsyncThunk('messages/sendMessage', async ({ message, socket }) => {
-  const token = localStorage.getItem('userId');
-  const parsedToken = JSON.parse(token).token;
-
-  const response = await axios.post('/api/v1/messages', message, {
-    headers: {
-      Authorization: `Bearer ${parsedToken}`,
-    },
-  });
-
-  socket.emit('newMessage', response.data);
-
-  return response.data;
+const messagesAdapter = createEntityAdapter({
+  selectId: (message) => message.id, // Явно указываем id
 });
 
-const messagesAdapter = createEntityAdapter();
 const initialState = messagesAdapter.getInitialState({
   loading: false,
   error: null,
 });
 
 const messagesSlice = createSlice({
-  name: 'messages',
+  name: "messages",
   initialState,
   reducers: {
     addMessages: messagesAdapter.addMany,
     addMessage: messagesAdapter.addOne,
-    removeMessagesByChannelId: (state, { payload }) => {
-      const messagesToRemove = Object.values(state.entities)
-        .filter((msg) => msg.channelId === payload)
-        .map((msg) => msg.id);
-      messagesAdapter.removeMany(state, messagesToRemove);
+    sendMessage: (state, action) => {
+      const { socket, ...messageData } = action.payload; // Убираем socket из payload
+      messagesAdapter.addOne(state, {
+        id: messageData.id || Date.now().toString(), // Генерируем id, если его нет
+        ...messageData,
+      });
     },
   },
   extraReducers: (builder) => {
@@ -44,8 +32,9 @@ const messagesSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
+        console.log("Reducer received messages:", action.payload);
         state.loading = false;
-        messagesAdapter.setAll(state, action.payload);
+        messagesAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
@@ -54,17 +43,16 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { addMessages, addMessage, removeMessagesByChannelId } = messagesSlice.actions;
+export const { addMessages, addMessage, sendMessage } = messagesSlice.actions;
 export const actions = messagesSlice.actions;
 export const selectors = messagesAdapter.getSelectors((state) => state.messages);
 export default messagesSlice.reducer;
 
 export const customSelectors = {
-  allMessages: selectors.selectAll,
   currentChannelMessages: createSelector(
-    [selectors.selectAll, (state) => state.channels.currentChannelId],
-    (allMessages, currentChannelId) => allMessages.filter(
-      ({ channelId }) => channelId === currentChannelId,
-    ),
+    [(state) => state.messages.entities, (state) => state.channels.currentChannelId],
+    (messages, currentChannelId) => {
+      return Object.values(messages).filter((msg) => msg.channelId === currentChannelId);
+    }
   ),
 };
