@@ -79,7 +79,7 @@ const Channels = () => {
     console.log(`Channel changed to: ${channel.id}`);
   }}
 >
-  #{channel.name}
+  # {channel.name}
 </Button>
                 {!isSystemChannel(channel) && (
                   <Dropdown as={ButtonGroup}>

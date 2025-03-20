@@ -63,6 +63,9 @@ const channelsSlice = createSlice({
         channelsAdapter.updateOne(state, { id: payload.id, changes: { name: payload.name } });
       })
       .addCase(removeChannel.fulfilled, (state, { payload }) => {
+        if (state.currentChannelId === payload) {
+          state.currentChannelId = "1"; // Переключаем пользователя в General
+        }
         channelsAdapter.removeOne(state, payload);
       });
   },

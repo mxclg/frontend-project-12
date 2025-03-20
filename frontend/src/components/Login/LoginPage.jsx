@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const formik = useFormik({
     initialValues: { username: "", password: "" },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       setAuthFailed(false);
       try {
         const response = await axios.post("/api/v1/login", values);
@@ -23,7 +23,7 @@ const LoginPage = () => {
         logIn();
         navigate("/");
       } catch (error) {
-        formik.setSubmitting(false);
+        setSubmitting(false);
         if (error.response && error.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
@@ -35,56 +35,61 @@ const LoginPage = () => {
   });
 
   return (
-   <div className="d-flex align-items-center justify-content-center vh-100">
-   <div className="container mt-5">
-     <h1>Вход</h1>
-     {loggedIn ? (
-       <LogoutButton />
-     ) : (
-       <Form onSubmit={formik.handleSubmit} className="p-3">
-         <fieldset>
-           <Form.Group>
-             <Form.Label htmlFor="username">Имя пользователя</Form.Label>
-             <Form.Control
-               type="text"
-               name="username"
-               id="username"
-               autoComplete="username"
-               ref={inputRef}
-               onChange={formik.handleChange}
-               value={formik.values.username}
-               isInvalid={authFailed}
-               required
-             />
-           </Form.Group>
- 
-           <Form.Group>
-             <Form.Label htmlFor="password">Пароль</Form.Label>
-             <Form.Control
-               type="password"
-               name="password"
-               id="password"
-               autoComplete="current-password"
-               onChange={formik.handleChange}
-               value={formik.values.password}
-               isInvalid={authFailed}
-               required
-             />
-             {authFailed && (
-               <div className="invalid-feedback d-block">
-                 Неверные имя пользователя или пароль
-               </div>
-             )}
-           </Form.Group>
- 
-           <Button type="submit" variant="primary" className="mt-3">
-             Войти
-           </Button>
-         </fieldset>
-       </Form>
-     )}
-   </div>
- </div>
+    <div className="d-flex align-items-center justify-content-center vh-100">
+      <div className="container mt-5">
+        <h1>Вход</h1>
+        {loggedIn ? (
+          <LogoutButton />
+        ) : (
+          <Form onSubmit={formik.handleSubmit} className="p-3">
+            <fieldset>
+              <Form.Group>
+                <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="username"
+                  id="username"
+                  autoComplete="username"
+                  ref={inputRef}
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  isInvalid={authFailed}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label htmlFor="password">Пароль</Form.Label>
+                <Form.Control
+                  type="password"
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  isInvalid={authFailed}
+                  required
+                />
+                {authFailed && (
+                  <div className="invalid-feedback d-block">
+                    Неверные имя пользователя или пароль
+                  </div>
+                )}
+              </Form.Group>
+
+              <Button 
+                type="submit" 
+                variant="primary" 
+                className="mt-3" 
+                disabled={formik.isSubmitting} // ✅ Блокируем кнопку при запросе
+              >
+                {formik.isSubmitting ? "Вход..." : "Войти"} 
+              </Button>
+            </fieldset>
+          </Form>
+        )}
+      </div>
+    </div>
   );
 };
 

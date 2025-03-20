@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 
 const MessagesForm = () => {
   const [message, setMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const [socket, setSocket] = useState(null);
@@ -30,11 +31,12 @@ const MessagesForm = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [currentChannelId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim() && socket) {
+      setIsSending(true);
       const newMessage = {
         body: message,
         username: "Вы",
@@ -58,6 +60,8 @@ const MessagesForm = () => {
         dispatch(sendMessage(data)); // Обновляем Redux
       } catch (error) {
         console.error("Ошибка при отправке сообщения:", error);
+      } finally {
+        setIsSending(false);
       }
   
       setMessage("");
@@ -73,8 +77,11 @@ const MessagesForm = () => {
           placeholder="Введите сообщение..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          disabled={isSending} // Блокируем инпут во время отправки
         />
-        <Button type="submit" variant="primary">Отправить</Button>
+        <Button type="submit" variant="primary" disabled={isSending || !message.trim()}>
+          {isSending ? "Отправка..." : "Отправить"}
+        </Button>
       </InputGroup>
     </Form>
   );

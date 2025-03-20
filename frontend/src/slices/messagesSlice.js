@@ -1,6 +1,7 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import { fetchMessages } from "./fetchData";
 import { createSelector } from "reselect";
+import { removeChannel } from "./fetchData";
 
 const messagesAdapter = createEntityAdapter({
   selectId: (message) => message.id, // Явно указываем id
@@ -39,8 +40,16 @@ const messagesSlice = createSlice({
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(removeChannel.fulfilled, (state, { payload }) => {
+        // Удаляем все сообщения, относящиеся к удалённому каналу
+        Object.values(state.entities).forEach((message) => {
+          if (message.channelId === payload) {
+            messagesAdapter.removeOne(state, message.id);
+          }
+        });
       });
-  },
+  }
 });
 
 export const { addMessages, addMessage, sendMessage } = messagesSlice.actions;
