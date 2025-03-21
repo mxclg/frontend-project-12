@@ -3,12 +3,10 @@ import axios from 'axios';
 
 export const fetchChannels = createAsyncThunk('channels/fetchChannels', async () => {
   const token = localStorage.getItem('userId');
-  const parsedToken = JSON.parse(token).token;
+  const parsedToken = token ? JSON.parse(token).token : null;
 
   const response = await axios.get('/api/v1/channels', {
-    headers: {
-      Authorization: `Bearer ${parsedToken}`, 
-    },
+    headers: { Authorization: `Bearer ${parsedToken}` },
   });
   return response.data;
 });
@@ -36,8 +34,6 @@ export const fetchMessages = createAsyncThunk('messages/fetchMessages', async ()
   const response = await axios.get('/api/v1/messages', {
     headers: { Authorization: `Bearer ${parsedToken}` },
   });
-
-  console.log("Fetched messages:", response.data); // Логируем ответ сервера
 
   return response.data;
 });

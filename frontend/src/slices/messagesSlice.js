@@ -33,7 +33,6 @@ const messagesSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchMessages.fulfilled, (state, action) => {
-        console.log("Reducer received messages:", action.payload);
         state.loading = false;
         messagesAdapter.upsertMany(state, action.payload);
       })

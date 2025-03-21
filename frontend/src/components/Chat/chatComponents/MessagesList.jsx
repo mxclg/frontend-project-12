@@ -14,12 +14,10 @@ const MessagesList = () => {
 
   useEffect(() => {
     if (currentChannelId) {
-      console.log("Fetching messages for channel:", currentChannelId);
       dispatch(fetchMessages(currentChannelId)); // Передаём currentChannelId
     }
   }, [dispatch, currentChannelId]);
 
-  console.log("Рендеринг сообщений:", messages);
   return (
     <Col className="p-0">
       <div className="d-flex flex-column h-100">

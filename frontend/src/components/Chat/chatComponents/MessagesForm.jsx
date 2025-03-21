@@ -55,7 +55,6 @@ const MessagesForm = () => {
         });
         
         const data = await response.json();
-        console.log("Ответ сервера:", data);
         
         dispatch(sendMessage(data)); // Обновляем Redux
       } catch (error) {

@@ -6,8 +6,6 @@ import { AuthProvider } from './contexts/AuthContext.jsx';
 import App from "./components/App.jsx";
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
-import { removeChannel } from './slices/fetchData.js';
-import { renameChannel } from './slices/fetchData.js';
 
 const SocketEventsHandler = () => {
   const socketRef = useRef(null);
@@ -36,7 +34,7 @@ const SocketEventsHandler = () => {
     });
     
     socket.on('removeChannel', (payload) => {
-      store.dispatch(channelsActions.removeChannelDirectly(payload.id)); // ✅ Только обновляем Redux
+      store.dispatch(channelsActions.removeChannelDirectly(payload.id));
     });
     
     return () => {

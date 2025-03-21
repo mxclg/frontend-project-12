@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Channels from "./chatComponents/Channels";
 import MessagesList from "./chatComponents/MessagesList";
 import useAuth from "../../hooks/useAuth";
-import LogoutButton from "../common/LogoutButton";
 import BuildPage from "../NotFound/NotFoundPage";
 
 const ChatPage = () => {
@@ -20,11 +19,6 @@ const ChatPage = () => {
 
         <MessagesList messages={messages} />
       </Row>
-
-      {/* Кнопка выхода */}
-      <div className="d-flex justify-content-end mt-3">
-        <LogoutButton />
-      </div>
     </Container>
   ) : (
     BuildPage("Перейти на страницу входа", "/login")

@@ -2,10 +2,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from "react-bootstrap";
 import { useState, useRef } from "react";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import LogoutButton from "../common/LogoutButton";
+import routes from "../../routes/routes";
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -81,13 +82,17 @@ const LoginPage = () => {
                 type="submit" 
                 variant="primary" 
                 className="mt-3" 
-                disabled={formik.isSubmitting} // ✅ Блокируем кнопку при запросе
+                disabled={formik.isSubmitting}
               >
                 {formik.isSubmitting ? "Вход..." : "Войти"} 
               </Button>
             </fieldset>
           </Form>
         )}
+        <div className="mt-3">
+  <span>Нет аккаунта? </span>
+  <Link to={routes.signUpPage()}>Зарегистрироваться</Link>
+</div>
       </div>
     </div>
   );

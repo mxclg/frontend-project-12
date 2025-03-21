@@ -1,8 +1,8 @@
 const routes = {
-    chatPage: () => '/',
-    loginPage: () => '/login',
-    notFoundPage: () => '*',
-  };
-  
-  export default routes;
-  
+  chatPage: () => '/',
+  loginPage: () => '/login',
+  signUpPage: () => '/signup', // ✅ исправлено
+  notFoundPage: () => '*',
+};
+
+export default routes;

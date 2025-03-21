@@ -16,10 +16,6 @@ const Channels = () => {
   const channels = useSelector(customSelectors.allChannels);
 
   useEffect(() => {
-
-  }, [channels]);
-
-  useEffect(() => {
     dispatch(fetchChannels());
   }, [dispatch]);
 
@@ -76,7 +72,6 @@ const Channels = () => {
   className="w-100 text-start"
   onClick={() => {
     dispatch(changeChannel(channel.id));
-    console.log(`Channel changed to: ${channel.id}`);
   }}
 >
   # {channel.name}
