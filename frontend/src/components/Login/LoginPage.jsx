@@ -20,8 +20,7 @@ const LoginPage = () => {
       setAuthFailed(false);
       try {
         const response = await axios.post("/api/v1/login", values);
-        localStorage.setItem("userId", JSON.stringify(response.data));
-        logIn();
+        logIn(response.data); // <-- передаём данные, а сохранит их уже useAuth
         navigate("/");
       } catch (error) {
         setSubmitting(false);

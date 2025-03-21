@@ -44,6 +44,7 @@ const SignUpPage = () => {
     validateOnChange: false,
     onSubmit: async (values) => {
       setAuthFailed(false);
+      formik.setSubmitting(true);
       try {
         const response = await axios.post('/api/v1/signup', {
           username: values.username,
