@@ -4,8 +4,10 @@ import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { renameChannel } from '../../../slices/fetchData';
+import { useTranslation } from 'react-i18next';
 
 const Rename = ({ show, handleClose, channel }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
@@ -17,9 +19,9 @@ const Rename = ({ show, handleClose, channel }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(3, 'Минимум 3 символа')
-      .max(20, 'Максимум 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('errors.rangeLetter'))
+      .max(20, t('errors.rangeLetter'))
+      .required(t('errors.required')),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -37,7 +39,7 @@ const Rename = ({ show, handleClose, channel }) => {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('ui.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={{ name: channel?.name || '' }}
@@ -48,23 +50,23 @@ const Rename = ({ show, handleClose, channel }) => {
           <FormikForm>
             <Modal.Body>
               <Form.Group>
-                <Form.Label htmlFor="name">Новое имя</Form.Label>
+                <Form.Label htmlFor="name">{t('ui.nameChannel')}</Form.Label>
                 <Field
                   id="name"
                   name="name"
                   className="form-control"
-                  placeholder="Введите новое имя"
-                  innerRef={inputRef} // ✅ Автофокус
+                  placeholder={t('ui.nameChannel')}
+                  innerRef={inputRef}
                 />
                 <ErrorMessage name="name" component="div" className="text-danger" />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Отмена
+                {t('buttons.cancel')}
               </Button>
               <Button type="submit" variant="primary" disabled={isSubmitting}>
-                Сохранить
+                {t('buttons.submit')}
               </Button>
             </Modal.Footer>
           </FormikForm>

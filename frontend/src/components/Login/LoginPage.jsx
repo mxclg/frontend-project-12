@@ -7,8 +7,10 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import LogoutButton from "../common/LogoutButton";
 import routes from "../../routes/routes";
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const LoginPage = () => {
       setAuthFailed(false);
       try {
         const response = await axios.post("/api/v1/login", values);
-        logIn(response.data); // <-- передаём данные, а сохранит их уже useAuth
+        logIn(response.data);
         navigate("/");
       } catch (error) {
         setSubmitting(false);
@@ -37,14 +39,14 @@ const LoginPage = () => {
   return (
     <div className="d-flex align-items-center justify-content-center vh-100">
       <div className="container mt-5">
-        <h1>Вход</h1>
+        <h1>{t('buttons.logIn')}</h1>
         {loggedIn ? (
           <LogoutButton />
         ) : (
           <Form onSubmit={formik.handleSubmit} className="p-3">
             <fieldset>
               <Form.Group>
-                <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
                 <Form.Control
                   type="text"
                   name="username"
@@ -59,7 +61,7 @@ const LoginPage = () => {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label htmlFor="password">Пароль</Form.Label>
+                <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
                 <Form.Control
                   type="password"
                   name="password"
@@ -72,7 +74,7 @@ const LoginPage = () => {
                 />
                 {authFailed && (
                   <div className="invalid-feedback d-block">
-                    Неверные имя пользователя или пароль
+                    {t('errors.incorrect')}
                   </div>
                 )}
               </Form.Group>
@@ -83,15 +85,15 @@ const LoginPage = () => {
                 className="mt-3" 
                 disabled={formik.isSubmitting}
               >
-                {formik.isSubmitting ? "Вход..." : "Войти"} 
+                {formik.isSubmitting ? `${t('buttons.logIn')}...` : t('buttons.logIn')}
               </Button>
             </fieldset>
           </Form>
         )}
         <div className="mt-3">
-  <span>Нет аккаунта? </span>
-  <Link to={routes.signUpPage()}>Зарегистрироваться</Link>
-</div>
+          <span>{t('ui.noAccount')}</span>
+          <Link to={routes.signUpPage()}>{t('ui.registration')}</Link>
+        </div>
       </div>
     </div>
   );

@@ -5,16 +5,14 @@ import { Col } from "react-bootstrap";
 import MessagesBody from "./MessagesBody";
 import MessagesHeader from "./MessagesHeader";
 import { fetchMessages } from "../../../slices/fetchData";
-import { customSelectors } from "../../../slices/messagesSlice";
 
 const MessagesList = () => {
   const dispatch = useDispatch();
   const currentChannelId = useSelector(state => state.channels.currentChannelId);
-  const messages = useSelector(customSelectors.currentChannelMessages);
 
   useEffect(() => {
     if (currentChannelId) {
-      dispatch(fetchMessages(currentChannelId)); // Передаём currentChannelId
+      dispatch(fetchMessages(currentChannelId));
     }
   }, [dispatch, currentChannelId]);
 
@@ -22,7 +20,7 @@ const MessagesList = () => {
     <Col className="p-0">
       <div className="d-flex flex-column h-100">
         <MessagesHeader />
-        <MessagesBody messages={messages} />
+        <MessagesBody />
         <MessagesForm />
       </div>
     </Col>

@@ -25,7 +25,6 @@ const AuthWrapper = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
       <Router>
         <Nav />
         <Routes>
@@ -35,7 +34,6 @@ function App() {
           <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
         </Routes>
       </Router>
-    </AuthProvider>
   );
 }
 

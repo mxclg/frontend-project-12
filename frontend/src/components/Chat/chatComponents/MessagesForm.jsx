@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../../../slices/messagesSlice";
 import { fetchMessages } from '../../../slices/fetchData';
 import { io } from "socket.io-client";
+import { useTranslation } from "react-i18next";
 
 const MessagesForm = () => {
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const dispatch = useDispatch();
@@ -55,14 +57,13 @@ const MessagesForm = () => {
         });
         
         const data = await response.json();
-        
-        dispatch(sendMessage(data)); // Обновляем Redux
+        dispatch(sendMessage(data));
       } catch (error) {
         console.error("Ошибка при отправке сообщения:", error);
       } finally {
         setIsSending(false);
       }
-  
+
       setMessage("");
     }
   };
@@ -73,13 +74,14 @@ const MessagesForm = () => {
         <Form.Control
           ref={inputRef}
           type="text"
-          placeholder="Введите сообщение..."
+          placeholder={t('fields.inputMessage')}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={isSending} // Блокируем инпут во время отправки
+          disabled={isSending}
+          aria-label={t('fields.newMessage')}
         />
         <Button type="submit" variant="primary" disabled={isSending || !message.trim()}>
-          {isSending ? "Отправка..." : "Отправить"}
+          {isSending ? `${t('buttons.submit')}...` : t('buttons.submit')}
         </Button>
       </InputGroup>
     </Form>

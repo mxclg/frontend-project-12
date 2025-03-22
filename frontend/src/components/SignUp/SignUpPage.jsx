@@ -6,24 +6,10 @@ import * as yup from 'yup';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
 import routes from '../../routes/routes';
-
-const validationSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, 'Имя пользователя должно содержать от 3 до 20 символов')
-    .max(20, 'Имя пользователя должно содержать от 3 до 20 символов')
-    .required('Обязательное поле'),
-  password: yup
-    .string()
-    .min(6, 'Пароль должен содержать минимум 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
-    .required('Обязательное поле'),
-});
+import { useTranslation } from 'react-i18next';
 
 const SignUpPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef(null);
@@ -32,6 +18,22 @@ const SignUpPage = () => {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const validationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .min(3, t('errors.rangeLetter'))
+      .max(20, t('errors.rangeLetter'))
+      .required(t('errors.required')),
+    password: yup
+      .string()
+      .min(6, t('errors.minLetter'))
+      .required(t('errors.required')),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], t('errors.checkPassword'))
+      .required(t('errors.required')),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -70,26 +72,26 @@ const SignUpPage = () => {
         <div className="col-12 col-md-6 col-lg-4">
           <Card className="shadow-sm">
             <Card.Body className="p-4">
-              <h1 className="text-center mb-4">Регистрация</h1>
+              <h1 className="text-center mb-4">{t('ui.registration')}</h1>
               <Form onSubmit={formik.handleSubmit}>
-              <FormGroup className="mb-3">
-  <Form.Label>Имя пользователя</Form.Label>
-  <Form.Control
-    ref={inputRef}
-    name="username"
-    autoComplete="username"
-    required
-    onChange={formik.handleChange}
-    value={formik.values.username}
-    isInvalid={formik.errors.username || authFailed}
-  />
-  <Form.Control.Feedback type="invalid">
-    {formik.errors.username || (authFailed && 'Такой пользователь уже существует')}
-  </Form.Control.Feedback>
-</FormGroup>
-                
                 <FormGroup className="mb-3">
-                  <Form.Label>Пароль</Form.Label>
+                  <Form.Label>{t('fields.username')}</Form.Label>
+                  <Form.Control
+                    ref={inputRef}
+                    name="username"
+                    autoComplete="username"
+                    required
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    isInvalid={formik.errors.username || authFailed}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.username || (authFailed && t('errors.alreadyExists'))}
+                  </Form.Control.Feedback>
+                </FormGroup>
+
+                <FormGroup className="mb-3">
+                  <Form.Label>{t('fields.password')}</Form.Label>
                   <Form.Control
                     name="password"
                     type="password"
@@ -103,9 +105,9 @@ const SignUpPage = () => {
                     {formik.errors.password}
                   </Form.Control.Feedback>
                 </FormGroup>
-                
+
                 <FormGroup className="mb-4">
-                  <Form.Label>Подтверждение пароля</Form.Label>
+                  <Form.Label>{t('fields.confirmPassword')}</Form.Label>
                   <Form.Control
                     name="confirmPassword"
                     type="password"
@@ -119,9 +121,9 @@ const SignUpPage = () => {
                     {formik.errors.confirmPassword}
                   </Form.Control.Feedback>
                 </FormGroup>
-                
+
                 <Button type="submit" variant="primary" className="w-100" disabled={formik.isSubmitting}>
-                  Зарегистрироваться
+                  {t('buttons.register')}
                 </Button>
               </Form>
             </Card.Body>

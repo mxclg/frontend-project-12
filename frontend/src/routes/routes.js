@@ -1,7 +1,7 @@
 const routes = {
   chatPage: () => '/',
   loginPage: () => '/login',
-  signUpPage: () => '/signup', // ✅ исправлено
+  signUpPage: () => '/signup',
   notFoundPage: () => '*',
 };
 
