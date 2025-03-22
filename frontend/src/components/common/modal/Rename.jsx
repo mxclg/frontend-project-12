@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { renameChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const Rename = ({ show, handleClose, channel }) => {
   const { t } = useTranslation();
@@ -28,9 +29,11 @@ const Rename = ({ show, handleClose, channel }) => {
     if (channel) {
       try {
         await dispatch(renameChannel({ id: channel.id, name: values.name })).unwrap();
+        toast.success(t('notify.renamedChannel'));
         handleClose();
       } catch (error) {
         console.error("Ошибка при переименовании канала:", error);
+        toast.error(t('notify.networkError'));
       }
       setSubmitting(false);
     }

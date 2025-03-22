@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { removeChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const Remove = ({ show, handleClose, channel }) => {
   const { t } = useTranslation();
@@ -14,9 +15,11 @@ const Remove = ({ show, handleClose, channel }) => {
       setIsDeleting(true);
       try {
         await dispatch(removeChannel(channel.id)).unwrap();
+        toast.success(t('notify.removedChannel'));
         handleClose();
       } catch (error) {
         console.error("Ошибка удаления канала:", error);
+        toast.error(t('notify.networkError'));
       } finally {
         setIsDeleting(false);
       }

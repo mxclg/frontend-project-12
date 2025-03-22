@@ -5,22 +5,23 @@ import ChatPage from "./Chat/ChatPage";
 import LoginPage from "./Login/LoginPage";
 import SignUpPage from "./SignUp/SignUpPage";
 import Nav from './common/Nav';
-import { AuthProvider } from "../contexts/AuthContext";
 import useAuth from "../hooks/useAuth";
 import routes from "../routes/routes";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthWrapper = ({ children }) => {
- const { loggedIn } = useAuth();
- const navigate = useNavigate();
+  const { loggedIn } = useAuth();
+  const navigate = useNavigate();
 
- useEffect(() => {
-   const token = localStorage.getItem("userId");
-   if (!token) {
-     navigate("/login");
-   }
- }, [loggedIn, navigate]);
+  useEffect(() => {
+    const token = localStorage.getItem("userId");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [loggedIn, navigate]);
 
- return children;
+  return children;
 };
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path={routes.signUpPage()} element={<SignUpPage />} />
           <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
         </Routes>
+        <ToastContainer />
       </Router>
   );
 }
