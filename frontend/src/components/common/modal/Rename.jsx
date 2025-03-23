@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
@@ -6,11 +6,13 @@ import { useDispatch } from 'react-redux';
 import { renameChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import FilterContext from '../../../contexts/FilterContext.jsx';
 
 const Rename = ({ show, handleClose, channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+  const { clean } = useContext(FilterContext);
 
   useEffect(() => {
     if (show && inputRef.current) {
@@ -45,7 +47,7 @@ const Rename = ({ show, handleClose, channel }) => {
         <Modal.Title>{t('ui.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Formik
-        initialValues={{ name: channel?.name || '' }}
+        initialValues={{ name: channel ? clean(channel.name) : '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >

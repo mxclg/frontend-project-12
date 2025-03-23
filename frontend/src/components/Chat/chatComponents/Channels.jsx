@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { customSelectors, changeChannel } from '../../../slices/channelsSlice';
 import { io } from 'socket.io-client';
 import { Button, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
@@ -8,9 +8,11 @@ import { actions as modalActions, selectors as modalSelectors } from '../../../s
 import { fetchChannels } from '../../../slices/fetchData';
 import { addChannel } from '../../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
+import FilterContext from '../../../contexts/FilterContext.jsx';
 
 const Channels = () => {
   const { t } = useTranslation();
+  const { clean } = useContext(FilterContext);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.channels.loading);
   const error = useSelector(state => state.channels.error);
@@ -76,7 +78,7 @@ const Channels = () => {
                     dispatch(changeChannel(channel.id));
                   }}
                 >
-                  # {channel.name}
+                  # {clean(channel.name)}
                 </Button>
                 {!isSystemChannel(channel) && (
                   <Dropdown as={ButtonGroup}>

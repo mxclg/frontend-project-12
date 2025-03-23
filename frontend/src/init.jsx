@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
 import i18next from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
+import FilterProvider from './providers/FilterProvider.jsx';
 import resources from './locales/index.js';
 import store from './slices/store.js';
 import { AuthProvider } from './contexts/AuthContext.jsx';
@@ -64,13 +65,15 @@ const init = async () => {
 
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <I18nextProvider i18n={i18n}>
-          <SocketEventsHandler />
-          <App />
-        </I18nextProvider>
-      </AuthProvider>
-    </Provider>
+  <AuthProvider>
+    <FilterProvider>
+      <I18nextProvider i18n={i18n}>
+        <SocketEventsHandler />
+        <App />
+      </I18nextProvider>
+    </FilterProvider>
+  </AuthProvider>
+</Provider>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addChannel, changeChannel } from '../../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import FilterContext from '../../../contexts/FilterContext.jsx';
 
 const Add = ({ show, handleClose }) => {
   const { t } = useTranslation();
+  const { clean } = useContext(FilterContext);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const channels = useSelector((state) => state.channels.entities);
@@ -31,7 +33,7 @@ const Add = ({ show, handleClose }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const newChannel = { name: values.name };
+      const newChannel = { name: clean(values.name) };
       const response = await dispatch(addChannel(newChannel)).unwrap();
       dispatch(changeChannel(response.id));
       toast.success(t('notify.createdChannel'));
