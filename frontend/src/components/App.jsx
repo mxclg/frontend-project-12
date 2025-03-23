@@ -10,6 +10,9 @@ import routes from "../routes/routes";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+// 🔧 Rollbar
+import { ErrorBoundary } from '@rollbar/react';
+
 const AuthWrapper = ({ children }) => {
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
@@ -26,6 +29,7 @@ const AuthWrapper = ({ children }) => {
 
 function App() {
   return (
+    <ErrorBoundary> {/* 🔧 отлавливаем ошибки всего приложения */}
       <Router>
         <Nav />
         <Routes>
@@ -36,6 +40,7 @@ function App() {
         </Routes>
         <ToastContainer />
       </Router>
+    </ErrorBoundary>
   );
 }
 

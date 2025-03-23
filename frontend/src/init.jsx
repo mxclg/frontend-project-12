@@ -11,6 +11,14 @@ import App from "./components/App.jsx";
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 
+// 🔧 Rollbar
+import { Provider as RollbarProvider } from '@rollbar/react';
+
+const rollbarConfig = {
+  accessToken: '8481e45bd3b543cc812f153f3fa045dd',
+  environment: 'production',
+};
+
 const i18n = i18next.createInstance();
 
 const SocketEventsHandler = () => {
@@ -31,23 +39,18 @@ const SocketEventsHandler = () => {
       const state = store.getState();
       if (!state.channels.entities[payload.id]) {
         store.dispatch(channelsActions.addChannelDirectly(payload));
-      } else {
       }
     });
 
     socket.on('renameChannel', (payload) => {
       store.dispatch(channelsActions.renameChannelDirectly({ id: payload.id, changes: { name: payload.name } }));
     });
-    
+
     socket.on('removeChannel', (payload) => {
       store.dispatch(channelsActions.removeChannelDirectly(payload.id));
     });
-    
+
     return () => {
-      socket.off('newChannel');
-      socket.off('newMessage');
-      socket.off('removeChannel');
-      socket.off('renameChannel');
       socket.disconnect();
     };
   }, []);
@@ -65,15 +68,17 @@ const init = async () => {
 
   return (
     <Provider store={store}>
-  <AuthProvider>
-    <FilterProvider>
-      <I18nextProvider i18n={i18n}>
-        <SocketEventsHandler />
-        <App />
-      </I18nextProvider>
-    </FilterProvider>
-  </AuthProvider>
-</Provider>
+      <AuthProvider>
+        <FilterProvider>
+          <I18nextProvider i18n={i18n}>
+            <RollbarProvider config={rollbarConfig}> {/* 🔧 обёртка Rollbar */}
+              <SocketEventsHandler />
+              <App />
+            </RollbarProvider>
+          </I18nextProvider>
+        </FilterProvider>
+      </AuthProvider>
+    </Provider>
   );
 };
 
