@@ -70,8 +70,8 @@ const SignUpPage = () => {
     <div className="container-fluid h-100 d-flex align-items-center justify-content-center">
       <div className="row justify-content-center align-content-center h-100 w-100">
         <div className="col-12 col-md-6 col-lg-4">
-          <Card className="shadow-sm">
-            <Card.Body className="p-4">
+        <Card className="shadow-sm border-0">
+        <Card.Body className="p-4 text-center">
               <h1 className="text-center mb-4">{t('ui.registration')}</h1>
               <Form onSubmit={formik.handleSubmit}>
                 <FormGroup className="mb-3">
@@ -122,7 +122,7 @@ const SignUpPage = () => {
                   </Form.Control.Feedback>
                 </FormGroup>
 
-                <Button type="submit" variant="primary" className="w-100" disabled={formik.isSubmitting}>
+                <Button type="submit" variant="primary" className="w-100 mt-3" disabled={formik.isSubmitting}>
                   {t('buttons.register')}
                 </Button>
               </Form>

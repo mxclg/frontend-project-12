@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from "react-bootstrap";
 import { useState, useRef } from "react";
 import { useFormik } from "formik";
@@ -38,14 +37,14 @@ const LoginPage = () => {
 
   return (
     <div className="d-flex align-items-center justify-content-center vh-100">
-      <div className="container mt-5">
-        <h1>{t('buttons.logIn')}</h1>
+      <div className="container p-5">
+      <h1 className="text-center mb-4">{t('buttons.logIn')}</h1>
         {loggedIn ? (
           <LogoutButton />
         ) : (
           <Form onSubmit={formik.handleSubmit} className="p-3">
             <fieldset>
-              <Form.Group>
+            <Form.Group className="mb-3">
                 <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
                 <Form.Control
                   type="text"

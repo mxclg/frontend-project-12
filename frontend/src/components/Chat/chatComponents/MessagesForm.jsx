@@ -69,8 +69,8 @@ const MessagesForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 border-top">
-      <InputGroup>
+    <Form onSubmit={handleSubmit} className="border-top p-3">
+      <InputGroup className="has-validation">
         <Form.Control
           ref={inputRef}
           type="text"

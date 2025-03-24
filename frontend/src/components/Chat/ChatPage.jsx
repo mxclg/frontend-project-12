@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
@@ -26,8 +25,8 @@ const ChatPage = () => {
   }
 
   return (
-    <Container fluid className="h-100 my-4">
-      <Row className="h-100 bg-light rounded shadow">
+    <Container className="my-4 h-100 overflow-hidden">
+      <Row className="h-100 bg-white flex-md-row flex-column overflow-hidden rounded shadow">
         <Channels />
         <MessagesList />
       </Row>

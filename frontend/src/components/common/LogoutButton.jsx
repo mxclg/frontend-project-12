@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import { useTranslation } from "react-i18next";

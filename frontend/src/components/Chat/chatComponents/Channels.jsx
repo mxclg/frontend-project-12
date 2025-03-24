@@ -55,8 +55,8 @@ const Channels = () => {
   const isSystemChannel = (channel) => ['general', 'random'].includes(channel.name);
 
   return (
-    <Col xs={4} md={2} className="border-end p-0 bg-light d-flex flex-column">
-      <div className="d-flex justify-content-between align-items-center p-4">
+    <Col xs={4} md={2} className="col-4 col-md-2 border-end px-0 bg-light d-flex flex-column">
+      <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
         <h5>{t('ui.channels')}</h5>
         <Button onClick={() => handleOpenModal('addChannel')} variant="outline-primary">
           {t('ui.addChannel')}

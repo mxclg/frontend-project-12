@@ -1,3 +1,4 @@
+import './assets/application.scss';
 import { createRoot } from 'react-dom/client';
 import init from './init.jsx';
 
