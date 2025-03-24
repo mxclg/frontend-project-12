@@ -41,7 +41,7 @@ const MessagesForm = () => {
       setIsSending(true);
       const newMessage = {
         body: message,
-        username: "your-nickname",
+        username: "Вы",
         channelId: currentChannelId
       };
   

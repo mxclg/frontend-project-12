@@ -69,7 +69,7 @@ const init = async () => {
       <AuthProvider>
         <FilterProvider>
           <I18nextProvider i18n={i18n}>
-            <RollbarProvider config={rollbarConfig}> {/* 🔧 обёртка Rollbar */}
+            <RollbarProvider config={rollbarConfig}>
               <SocketEventsHandler />
               <App />
             </RollbarProvider>

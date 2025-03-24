@@ -14,7 +14,6 @@ export const addChannel = createAsyncThunk('channels/addChannel', async (channel
   return response.data;
 });
 
-// ✅ Добавляем экспорт `channelsAdapter`
 export const channelsAdapter = createEntityAdapter();
 
 const initialState = channelsAdapter.getInitialState({
@@ -30,7 +29,7 @@ const channelsSlice = createSlice({
     setChannels: channelsAdapter.setAll,
     addChannelDirectly: channelsAdapter.addOne,
     renameChannelDirectly: channelsAdapter.updateOne,
-    removeChannelDirectly: channelsAdapter.removeOne, // ✅ Добавляем локальное удаление
+    removeChannelDirectly: channelsAdapter.removeOne,
     removeChannel: (state, { payload }) => {
       if (state.currentChannelId === payload) {
         state.currentChannelId = state.ids.length > 0 ? state.ids[0] : null;
@@ -64,7 +63,7 @@ const channelsSlice = createSlice({
       })
       .addCase(removeChannel.fulfilled, (state, { payload }) => {
         if (state.currentChannelId === payload) {
-          state.currentChannelId = "1"; // Переключаем пользователя в General
+          state.currentChannelId = "1";
         }
         channelsAdapter.removeOne(state, payload);
       });

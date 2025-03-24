@@ -7,7 +7,7 @@ import FilterContext from "../../../contexts/FilterContext.jsx";
 import { customSelectors as messagesSelectors } from "../../../slices/messagesSlice";
 
 const MessagesHeader = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 const { clean } = useContext(FilterContext);
 const currentChannel = useSelector(customSelectors.currentChannel);
 const messages = useSelector(messagesSelectors.currentChannelMessages);

@@ -1,12 +1,10 @@
 import React, { useEffect, useContext } from 'react';
 import { customSelectors, changeChannel } from '../../../slices/channelsSlice';
-import { io } from 'socket.io-client';
 import { Button, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { Add, Remove, Rename } from '../../common/modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions, selectors as modalSelectors } from '../../../slices/modalSlice';
 import { fetchChannels } from '../../../slices/fetchData';
-import { addChannel } from '../../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
 import FilterContext from '../../../contexts/FilterContext.jsx';
 
@@ -16,7 +14,6 @@ const Channels = () => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.channels.loading);
   const error = useSelector(state => state.channels.error);
-  const currentChannelId = useSelector(state => state.channels.currentChannelId);
   const channels = useSelector(customSelectors.allChannels);
 
   useEffect(() => {
@@ -33,18 +30,6 @@ const Channels = () => {
 
   const handleCloseModal = () => {
     dispatch(modalActions.close());
-  };
-
-  const handleAddChannel = async (values, { setSubmitting }) => {
-    try {
-      const newChannel = { name: values.name };
-      const response = await dispatch(addChannel(newChannel)).unwrap();
-      dispatch(changeChannel(response.id));
-    } catch (error) {
-      console.error("Ошибка добавления канала:", error);
-    }
-    setSubmitting(false);
-    handleCloseModal();
   };
 
   const handleOpenRemoveModal = (channel) => handleOpenModal('removeChannel', channel);
