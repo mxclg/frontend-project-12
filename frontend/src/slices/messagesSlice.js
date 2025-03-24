@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 import { removeChannel } from "./fetchData";
 
 const messagesAdapter = createEntityAdapter({
-  selectId: (message) => message.id, // Явно указываем id
+  selectId: (message) => message.id,
 });
 
 const initialState = messagesAdapter.getInitialState({
@@ -19,9 +19,9 @@ const messagesSlice = createSlice({
     addMessages: messagesAdapter.addMany,
     addMessage: messagesAdapter.addOne,
     sendMessage: (state, action) => {
-      const { socket, ...messageData } = action.payload; // Убираем socket из payload
+      const { socket, ...messageData } = action.payload;
       messagesAdapter.addOne(state, {
-        id: messageData.id || Date.now().toString(), // Генерируем id, если его нет
+        id: messageData.id || Date.now().toString(),
         ...messageData,
       });
     },
@@ -41,7 +41,6 @@ const messagesSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(removeChannel.fulfilled, (state, { payload }) => {
-        // Удаляем все сообщения, относящиеся к удалённому каналу
         Object.values(state.entities).forEach((message) => {
           if (message.channelId === payload) {
             messagesAdapter.removeOne(state, message.id);

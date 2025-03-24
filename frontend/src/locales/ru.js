@@ -33,13 +33,13 @@ const ru = {
       },
       notify: {
         createdChannel: 'Канал создан',
-        networkError: 'Ошибка соединения',
         removedChannel: 'Канал удалён',
         renamedChannel: 'Канал переименован',
+        networkError: 'Ошибка соединения',
         unauthorized: 'Произошла ошибка при загрузке данных',
       },
       ui: {
-        addChannel: 'Добавить канал',
+        addChannel: '+',
         channels: 'Каналы',
         exist: 'Уже есть аккаунт? ',
         goTo: 'Но вы можете перейти ',
