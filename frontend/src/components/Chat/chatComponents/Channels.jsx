@@ -40,12 +40,16 @@ const Channels = () => {
   const isSystemChannel = (channel) => ['general', 'random'].includes(channel.name);
 
   return (
-    <Col xs={4} md={2} className="col-4 col-md-2 border-end px-0 bg-light d-flex flex-column">
-      <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-        <h5>{t('ui.channels')}</h5>
-        <Button onClick={() => handleOpenModal('addChannel')} variant="outline-primary">
-          {t('ui.addChannel')}
-        </Button>
+    <Col className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex bg-light">
+      <div className="d-flex justify-content-between align-items-center p-3">
+        <b>{t('ui.channels')}</b>
+        <Button className="p-0 text-primary" variant="group-vertical" onClick={() => handleOpenModal('addChannel')}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
+    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+  </svg>
+  <span className="visually-hidden">+</span>
+</Button>
       </div>
       <div className="overflow-auto flex-grow-1">
         {loading ? (

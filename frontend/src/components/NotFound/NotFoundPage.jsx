@@ -7,11 +7,10 @@ const NotFoundPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="text-center">
-      <h1>{t('ui.notFoundPage')}</h1>
-      <p>
-        {t('ui.goTo')}
-        <Link to={routes.chatPage()}>{t('ui.mainPage')}</Link>
+    <div className="text-center pt-5">
+      <h1 className="h4 text-muted mt-3">{t('ui.notFoundPage')}</h1>
+      <p className="text-muted">
+        {t('ui.goTo')} <Link to={routes.chatPage()}>{t('ui.mainPage')}</Link>
       </p>
     </div>
   );

@@ -7,7 +7,7 @@ const LogoutButton = () => {
   const { logOut } = useAuth();
 
   return (
-    <Button variant="primary" onClick={logOut} className="ms-3">
+    <Button variant="primary" onClick={logOut}>
       {t('buttons.logOut')}
     </Button>
   );

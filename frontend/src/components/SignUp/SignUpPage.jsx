@@ -70,63 +70,72 @@ const SignUpPage = () => {
     <div className="container-fluid h-100 d-flex align-items-center justify-content-center">
       <div className="row justify-content-center align-content-center h-100 w-100">
         <div className="col-12 col-md-6 col-lg-4">
-        <Card className="shadow-sm border-0">
-        <Card.Body className="p-4 text-center">
+          <Card className="shadow-sm border-0">
+            <Card.Body className="p-5">
               <h1 className="text-center mb-4">{t('ui.registration')}</h1>
-              <Form onSubmit={formik.handleSubmit}>
-                <FormGroup className="mb-3">
-                  <Form.Label>{t('fields.username')}</Form.Label>
+              <Form onSubmit={formik.handleSubmit} className="w-100">
+                <div className="form-floating mb-3">
                   <Form.Control
-                    ref={inputRef}
+                    id="username"
                     name="username"
+                    placeholder={t('fields.username')}
                     autoComplete="username"
                     required
+                    ref={inputRef}
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     isInvalid={formik.errors.username || authFailed}
                   />
+                  <Form.Label htmlFor="username">{t('fields.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.username || (authFailed && t('errors.alreadyExists'))}
                   </Form.Control.Feedback>
-                </FormGroup>
-
-                <FormGroup className="mb-3">
-                  <Form.Label>{t('fields.password')}</Form.Label>
+                </div>
+  
+                <div className="form-floating mb-3">
                   <Form.Control
+                    id="password"
                     name="password"
                     type="password"
+                    placeholder={t('fields.password')}
                     autoComplete="new-password"
                     required
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     isInvalid={formik.errors.password}
                   />
+                  <Form.Label htmlFor="password">{t('fields.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.password}
                   </Form.Control.Feedback>
-                </FormGroup>
-
-                <FormGroup className="mb-4">
-                  <Form.Label>{t('fields.confirmPassword')}</Form.Label>
+                </div>
+  
+                <div className="form-floating mb-4">
                   <Form.Control
+                    id="confirmPassword"
                     name="confirmPassword"
                     type="password"
+                    placeholder={t('fields.confirmPassword')}
                     autoComplete="new-password"
                     required
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
                     isInvalid={formik.errors.confirmPassword}
                   />
+                  <Form.Label htmlFor="confirmPassword">{t('fields.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.confirmPassword}
                   </Form.Control.Feedback>
-                </FormGroup>
-
-                <Button type="submit" variant="primary" className="w-100 mt-3" disabled={formik.isSubmitting}>
-                  {t('buttons.register')}
-                </Button>
+                </div>
+  
+                <Button type="submit" variant="outline-primary" className="w-100" disabled={formik.isSubmitting}>
+  {t('buttons.register')}
+</Button>
               </Form>
             </Card.Body>
+            {/* <Card.Footer className="p-4 text-center bg-light border-top">
+              <span>{t('ui.haveAccount')}</span> <a href={routes.loginPage()}>{t('buttons.logIn')}</a>
+            </Card.Footer> */}
           </Card>
         </div>
       </div>

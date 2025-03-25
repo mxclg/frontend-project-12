@@ -29,6 +29,7 @@ function App() {
   return (
     <ErrorBoundary> {/* 🔧 отлавливаем ошибки всего приложения */}
       <Router>
+      <div className="h-100 d-flex flex-column">
         <Nav />
         <Routes>
           <Route path={routes.chatPage()} element={<AuthWrapper><ChatPage /></AuthWrapper>} />
@@ -36,6 +37,7 @@ function App() {
           <Route path={routes.signUpPage()} element={<SignUpPage />} />
           <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
         </Routes>
+        </div>
         <ToastContainer />
       </Router>
     </ErrorBoundary>

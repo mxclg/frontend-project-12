@@ -16,13 +16,13 @@ const messageCount = messages.length;
 if (!currentChannel) return null;
 
 return (
-  <div className="bg-white p-3 shadow-sm mb-4">
-    <h6 className="mb-0">
-  # {clean(currentChannel.name)}
-</h6>
-<span className="text-muted">
-  {t('ui.counter.count', { count: messageCount })}
-</span>
+  <div className="bg-light mb-4 p-3 shadow-sm small">
+    <p className="m-0">
+      <b># {clean(currentChannel.name)}</b>
+    </p>
+    <span className="text-muted">
+      {t('ui.counter.count', { count: messageCount })}
+    </span>
   </div>
 );
 };
