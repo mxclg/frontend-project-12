@@ -39,11 +39,12 @@ const ru = {
         unauthorized: 'Произошла ошибка при загрузке данных',
       },
       ui: {
-        addChannel: '+',
+        addChannel: 'Добавить канал',
         channels: 'Каналы',
         exist: 'Уже есть аккаунт? ',
         goTo: 'Но вы можете перейти ',
         goToLogin: 'Перейти на страницу входа',
+        haveAccount: 'Уже есть аккаунт?',
         hexletChat: 'Hexlet Chat',
         loadingChannels: 'Загружаем каналы...',
         mainPage: 'на главную страницу',

@@ -55,7 +55,6 @@ const Add = ({ show, handleClose }) => {
           <FormikForm>
             <Modal.Body>
               <Form.Group>
-                <Form.Label htmlFor="name">{t('ui.nameChannel')}</Form.Label>
                 <Field
                   id="name"
                   name="name"

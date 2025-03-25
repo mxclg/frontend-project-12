@@ -65,6 +65,7 @@ const MessagesForm = () => {
       }
 
       setMessage("");
+      inputRef.current.focus();
     }
   };
 
@@ -78,7 +79,6 @@ const MessagesForm = () => {
             placeholder={t('fields.inputMessage')}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            disabled={isSending}
             aria-label={t('fields.newMessage')}
             className="border-0 p-0 ps-2"
           />
