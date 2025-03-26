@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { renameChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import FilterContext from '../../../contexts/FilterContext.jsx';
+import FilterContext from '../../../contexts/FilterContext.js';
 
 const Rename = ({ show, handleClose, channel }) => {
   const { t } = useTranslation();
@@ -55,7 +55,6 @@ const Rename = ({ show, handleClose, channel }) => {
           <FormikForm>
             <Modal.Body>
               <Form.Group>
-                <Form.Label htmlFor="name">{t('ui.nameChannel')}</Form.Label>
                 <Field
                   id="name"
                   name="name"

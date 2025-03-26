@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../../slices/messagesSlice";
-import { fetchMessages } from '../../../slices/fetchData';
 import { io } from "socket.io-client";
 import { useTranslation } from "react-i18next";
+import { sendMessage } from "../../../slices/messagesSlice";
+import { fetchMessages } from '../../../slices/fetchData';
+import useUser from '../../../hooks/useUser';
 
 const MessagesForm = () => {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ const MessagesForm = () => {
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const [socket, setSocket] = useState(null);
   const inputRef = useRef(null);
+  const currentUsername = useUser();
 
   useEffect(() => {
     const newSocket = io();
@@ -41,7 +43,7 @@ const MessagesForm = () => {
       setIsSending(true);
       const newMessage = {
         body: message,
-        username: "Вы",
+        username: currentUsername,
         channelId: currentChannelId
       };
   

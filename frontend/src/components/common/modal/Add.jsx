@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addChannel, changeChannel } from '../../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import FilterContext from '../../../contexts/FilterContext.jsx';
+import FilterContext from '../../../contexts/FilterContext.js';
 
 const Add = ({ show, handleClose }) => {
   const { t } = useTranslation();

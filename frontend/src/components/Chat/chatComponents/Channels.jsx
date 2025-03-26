@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions as modalActions, selectors as modalSelectors } from '../../../slices/modalSlice';
 import { fetchChannels } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
-import FilterContext from '../../../contexts/FilterContext.jsx';
+import FilterContext from '../../../contexts/FilterContext.js';
 
 const Channels = () => {
   const { t } = useTranslation();

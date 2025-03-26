@@ -1,6 +1,6 @@
 import leoProfanity from 'leo-profanity';
 import { useMemo } from 'react';
-import FilterContext from '../contexts/FilterContext.jsx';
+import FilterContext from '../contexts/FilterContext.js';
 
 const FilterProvider = ({ children }) => {
   const filter = useMemo(() => {
