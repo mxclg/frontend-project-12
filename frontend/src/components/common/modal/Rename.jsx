@@ -59,6 +59,7 @@ const Rename = ({ show, handleClose, channel }) => {
                   {t('ui.nameChannel')}
                 </Form.Label>
                 <Field
+                  id="name"
                   name="name"
                   className="form-control"
                   placeholder={t('ui.nameChannel')}
