@@ -71,18 +71,15 @@ const Channels = () => {
                   </Button>
                   {!isSystemChannel(channel) && (
                     <Dropdown as={ButtonGroup}>
-                      <Button
-                        variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                        onClick={() => handleOpenRenameModal(channel)}
-                      >
-                        {t('ui.manageChannel')}
-                      </Button>
+                      
                       <Dropdown.Toggle
-                        split
-                        id={`dropdown-${channel.id}`}
-                        variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                        className="rounded-0 border-start-0"
-                      />
+                          split
+                          id={`dropdown-${channel.id}`}
+                          variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                          className="rounded-0 border-start-0"
+                          >
+                          <span className="visually-hidden">{t('ui.manageChannel')}</span>
+                        </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item onClick={() => handleOpenRenameModal(channel)}>
                           {t('buttons.rename')}
