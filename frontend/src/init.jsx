@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import React, { useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';

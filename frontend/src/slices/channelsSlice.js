@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import axios from 'axios';
