@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
+import {
+  Formik, Field, ErrorMessage, Form as FormikForm,
+} from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { renameChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { renameChannel } from '../../../slices/fetchData';
 import FilterContext from '../../../contexts/FilterContext.js';
 
 const Rename = ({ show, handleClose, channel }) => {
@@ -34,7 +36,7 @@ const Rename = ({ show, handleClose, channel }) => {
         toast.success(t('notify.renamedChannel'));
         handleClose();
       } catch (error) {
-        console.error("Ошибка при переименовании канала:", error);
+        console.error('Ошибка при переименовании канала:', error);
         toast.error(t('notify.networkError'));
       }
       setSubmitting(false);

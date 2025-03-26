@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar } from 'react-bootstrap';
-import LogoutButton from '../common/LogoutButton';
+import { useTranslation } from 'react-i18next';
+import LogoutButton from './LogoutButton';
 import routes from '../../routes/routes';
 import useAuth from '../../hooks/useAuth';
-import { useTranslation } from 'react-i18next';
 
 const Nav = () => {
   const { t } = useTranslation();

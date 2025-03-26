@@ -1,7 +1,6 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { fetchMessages } from "./fetchData";
-import { createSelector } from "reselect";
-import { removeChannel } from "./fetchData";
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
+import { fetchMessages, removeChannel } from './fetchData';
 
 const messagesAdapter = createEntityAdapter({
   selectId: (message) => message.id,
@@ -13,7 +12,7 @@ const initialState = messagesAdapter.getInitialState({
 });
 
 const messagesSlice = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState,
   reducers: {
     addMessages: messagesAdapter.addMany,
@@ -47,19 +46,21 @@ const messagesSlice = createSlice({
           }
         });
       });
-  }
+  },
 });
 
 export const { addMessages, addMessage, sendMessage } = messagesSlice.actions;
-export const actions = messagesSlice.actions;
+export const { actions } = messagesSlice;
 export const selectors = messagesAdapter.getSelectors((state) => state.messages);
 export default messagesSlice.reducer;
 
-export const customSelectors = {
-  currentChannelMessages: createSelector(
-    [(state) => state.messages.entities, (state) => state.channels.currentChannelId],
-    (messages, currentChannelId) => {
-      return Object.values(messages).filter((msg) => msg.channelId === currentChannelId);
-    }
-  ),
-};
+export const currentChannelMessages = createSelector(
+  [
+    (state) => state.messages.entities,
+    (state) => state.channels.currentChannelId,
+  ],
+  (messages, currentChannelId) => Object.values(messages)
+    .filter((msg) => msg.channelId === currentChannelId),
+);
+
+export const customSelectors = { currentChannelMessages };

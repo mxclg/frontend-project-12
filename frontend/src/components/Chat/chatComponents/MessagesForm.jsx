@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Form, Button, InputGroup } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { io } from "socket.io-client";
-import { useTranslation } from "react-i18next";
-import { sendMessage } from "../../../slices/messagesSlice";
+import React, { useState, useEffect, useRef } from 'react';
+import { Form, Button, InputGroup } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+import { useTranslation } from 'react-i18next';
+import { sendMessage } from '../../../slices/messagesSlice';
 import { fetchMessages } from '../../../slices/fetchData';
 import useUser from '../../../hooks/useUser';
 
 const MessagesForm = () => {
   const { t } = useTranslation();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -44,11 +44,11 @@ const MessagesForm = () => {
       const newMessage = {
         body: message,
         username: currentUsername,
-        channelId: currentChannelId
+        channelId: currentChannelId,
       };
-  
+
       try {
-        const token = JSON.parse(localStorage.getItem('userId')).token;
+        const { token } = JSON.parse(localStorage.getItem('userId'));
         const response = await fetch('/api/v1/messages', {
           method: 'POST',
           headers: {
@@ -57,16 +57,16 @@ const MessagesForm = () => {
           },
           body: JSON.stringify(newMessage),
         });
-        
+
         const data = await response.json();
         dispatch(sendMessage(data));
       } catch (error) {
-        console.error("Ошибка при отправке сообщения:", error);
+        console.error('Ошибка при отправке сообщения:', error);
       } finally {
         setIsSending(false);
       }
 
-      setMessage("");
+      setMessage('');
       inputRef.current.focus();
     }
   };

@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { Formik, Field, ErrorMessage, Form as FormikForm } from 'formik';
+import {
+  Formik, Field, ErrorMessage, Form as FormikForm,
+} from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addChannel, changeChannel } from '../../../slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { addChannel, changeChannel } from '../../../slices/channelsSlice';
 import FilterContext from '../../../contexts/FilterContext.js';
 
 const Add = ({ show, handleClose }) => {
@@ -26,9 +28,7 @@ const Add = ({ show, handleClose }) => {
       .min(3, t('errors.rangeLetter'))
       .max(20, t('errors.rangeLetter'))
       .required(t('errors.required'))
-      .test('unique', t('errors.notOneOf'), (value) =>
-        !Object.values(channels).some((channel) => channel.name === value)
-      ),
+      .test('unique', t('errors.notOneOf'), (value) => !Object.values(channels).some((channel) => channel.name === value)),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {

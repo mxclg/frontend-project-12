@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { removeChannel } from '../../../slices/fetchData';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { removeChannel } from '../../../slices/fetchData';
 
 const Remove = ({ show, handleClose, channel }) => {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ const Remove = ({ show, handleClose, channel }) => {
         toast.success(t('notify.removedChannel'));
         handleClose();
       } catch (error) {
-        console.error("Ошибка удаления канала:", error);
+        console.error('Ошибка удаления канала:', error);
         toast.error(t('notify.networkError'));
       } finally {
         setIsDeleting(false);
@@ -32,7 +32,12 @@ const Remove = ({ show, handleClose, channel }) => {
         <Modal.Title>{t('ui.removeChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{t('ui.proof')} <strong>{channel?.name}</strong>?</p>
+        <p>
+          {t('ui.proof')}
+          {' '}
+          <strong>{channel?.name}</strong>
+          ?
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose} disabled={isDeleting}>

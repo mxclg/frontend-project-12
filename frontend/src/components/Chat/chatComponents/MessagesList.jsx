@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import MessagesForm from "./MessagesForm";
-import { Col } from "react-bootstrap";
-import MessagesBody from "./MessagesBody";
-import MessagesHeader from "./MessagesHeader";
-import { fetchMessages } from "../../../slices/fetchData";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Col } from 'react-bootstrap';
+import MessagesForm from './MessagesForm';
+import MessagesBody from './MessagesBody';
+import MessagesHeader from './MessagesHeader';
+import { fetchMessages } from '../../../slices/fetchData';
 
 const MessagesList = () => {
   const dispatch = useDispatch();
-  const currentChannelId = useSelector(state => state.channels.currentChannelId);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   useEffect(() => {
     if (currentChannelId) {
@@ -18,12 +18,12 @@ const MessagesList = () => {
 
   return (
     <Col className="p-0 h-100">
-  <div className="d-flex flex-column h-100">
-    <MessagesHeader />
-    <MessagesBody />
-    <MessagesForm />
-  </div>
-</Col>
+      <div className="d-flex flex-column h-100">
+        <MessagesHeader />
+        <MessagesBody />
+        <MessagesForm />
+      </div>
+    </Col>
   );
 };
 

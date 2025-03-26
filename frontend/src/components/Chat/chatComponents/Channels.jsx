@@ -1,21 +1,23 @@
 import React, { useEffect, useContext } from 'react';
-import { customSelectors, changeChannel } from '../../../slices/channelsSlice';
-import { Button, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
-import { Add, Remove, Rename } from '../../common/modal';
+import {
+  Button, Col, Dropdown, ButtonGroup,
+} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { customSelectors, changeChannel } from '../../../slices/channelsSlice';
+import { Add, Remove, Rename } from '../../common/modal';
 import { actions as modalActions, selectors as modalSelectors } from '../../../slices/modalSlice';
 import { fetchChannels } from '../../../slices/fetchData';
-import { useTranslation } from 'react-i18next';
 import FilterContext from '../../../contexts/FilterContext.js';
 
 const Channels = () => {
   const { t } = useTranslation();
   const { clean } = useContext(FilterContext);
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.channels.loading);
-  const error = useSelector(state => state.channels.error);
+  const loading = useSelector((state) => state.channels.loading);
+  const error = useSelector((state) => state.channels.error);
   const channels = useSelector(customSelectors.allChannels);
-  const currentChannelId = useSelector(state => state.channels.currentChannelId);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   useEffect(() => {
     dispatch(fetchChannels());
@@ -53,47 +55,52 @@ const Channels = () => {
         </Button>
       </div>
       <div className="overflow-auto flex-grow-1">
-        {loading ? (
-          <p>{t('ui.loadingChannels')}</p>
-        ) : error ? (
-          <p style={{ color: 'red' }}>{t('errors.unknown')}</p>
-        ) : (
-          <ul className="list-unstyled">
-            {channels.map(channel => (
-              <li key={channel.id} className="nav-item w-100">
-                <div className="d-flex justify-content-between align-items-center">
-                  <Button
+        {loading && (
+        <p>{t('ui.loadingChannels')}</p>
+        )}
+
+        {error && (
+        <p style={{ color: 'red' }}>{t('errors.unknown')}</p>
+        )}
+
+        {!loading && !error && (
+        <ul className="list-unstyled">
+          {channels.map((channel) => (
+            <li key={channel.id} className="nav-item w-100">
+              <div className="d-flex justify-content-between align-items-center">
+                <Button
+                  variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                  className={`w-100 rounded-0 text-start text-truncate ${channel.id === currentChannelId ? 'btn' : ''}`}
+                  onClick={() => dispatch(changeChannel(channel.id))}
+                >
+                  #
+                  {' '}
+                  {clean(channel.name)}
+                </Button>
+                {!isSystemChannel(channel) && (
+                <Dropdown as={ButtonGroup}>
+                  <Dropdown.Toggle
+                    split
+                    id={`dropdown-${channel.id}`}
                     variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    className={`w-100 rounded-0 text-start text-truncate ${channel.id === currentChannelId ? 'btn' : ''}`}
-                    onClick={() => dispatch(changeChannel(channel.id))}
+                    className="rounded-0 border-start-0"
                   >
-                    # {clean(channel.name)}
-                  </Button>
-                  {!isSystemChannel(channel) && (
-                    <Dropdown as={ButtonGroup}>
-                      
-                      <Dropdown.Toggle
-                          split
-                          id={`dropdown-${channel.id}`}
-                          variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                          className="rounded-0 border-start-0"
-                          >
-                          <span className="visually-hidden">{t('buttons.channelManagement')}</span>
-                        </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleOpenRenameModal(channel)}>
-                          {t('buttons.rename')}
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleOpenRemoveModal(channel)}>
-                          {t('buttons.remove')}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+                    <span className="visually-hidden">{t('buttons.channelManagement')}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleOpenRenameModal(channel)}>
+                      {t('buttons.rename')}
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleOpenRemoveModal(channel)}>
+                      {t('buttons.remove')}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
         )}
       </div>
       <Add show={isModalOpen && modalType === 'addChannel'} handleClose={handleCloseModal} />

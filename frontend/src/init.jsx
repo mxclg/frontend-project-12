@@ -8,7 +8,7 @@ import FilterProvider from './providers/FilterProvider.jsx';
 import resources from './locales/index.js';
 import store from './slices/store.js';
 import { AuthProvider } from './contexts/AuthContext.jsx';
-import App from "./components/App.jsx";
+import App from './components/App.jsx';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 
@@ -41,7 +41,8 @@ const SocketEventsHandler = () => {
     });
 
     socket.on('renameChannel', (payload) => {
-      store.dispatch(channelsActions.renameChannelDirectly({ id: payload.id, changes: { name: payload.name } }));
+      store.dispatch(channelsActions
+        .renameChannelDirectly({ id: payload.id, changes: { name: payload.name } }));
     });
 
     socket.on('removeChannel', (payload) => {

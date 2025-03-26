@@ -1,12 +1,12 @@
-import { Form, Button } from "react-bootstrap";
-import { useState, useRef } from "react";
-import { useFormik } from "formik";
-import { useNavigate, Link } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
+import { useState, useRef } from 'react';
+import { useFormik } from 'formik';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import axios from "axios";
-import useAuth from "../../hooks/useAuth";
-import LogoutButton from "../common/LogoutButton";
-import routes from "../../routes/routes";
+import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
+import LogoutButton from '../common/LogoutButton';
+import routes from '../../routes/routes';
 import avatar from '../../assets/avatar-login-page.jpg';
 
 const LoginPage = () => {
@@ -17,13 +17,13 @@ const LoginPage = () => {
   const { loggedIn, logIn } = useAuth();
 
   const formik = useFormik({
-    initialValues: { username: "", password: "" },
+    initialValues: { username: '', password: '' },
     onSubmit: async (values, { setSubmitting }) => {
       setAuthFailed(false);
       try {
-        const response = await axios.post("/api/v1/login", values);
+        const response = await axios.post('/api/v1/login', values);
         logIn(response.data);
-        navigate("/");
+        navigate('/');
       } catch (error) {
         setSubmitting(false);
         if (error.response && error.response.status === 401) {
@@ -66,7 +66,7 @@ const LoginPage = () => {
                       />
                       <Form.Label htmlFor="username">{t('fields.nickname')}</Form.Label>
                     </div>
-  
+
                     <div className="form-floating mb-4">
                       <Form.Control
                         type="password"
@@ -86,7 +86,7 @@ const LoginPage = () => {
                         </div>
                       )}
                     </div>
-  
+
                     <Button
                       type="submit"
                       variant="outline-primary"
@@ -101,7 +101,9 @@ const LoginPage = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t('ui.noAccount')}</span> <Link to={routes.signUpPage()}>{t('ui.registration')}</Link>
+                <span>{t('ui.noAccount')}</span>
+                {' '}
+                <Link to={routes.signUpPage()}>{t('ui.registration')}</Link>
               </div>
             </div>
           </div>

@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import Channels from "./chatComponents/Channels";
-import MessagesList from "./chatComponents/MessagesList";
-import useAuth from "../../hooks/useAuth";
-import NotFoundPage from "../NotFound/NotFoundPage";
+import Channels from './chatComponents/Channels';
+import MessagesList from './chatComponents/MessagesList';
+import useAuth from '../../hooks/useAuth';
+import NotFoundPage from '../NotFound/NotFoundPage';
 import { selectors as loadingSelectors, stateLoad } from '../../slices/loadingStateSlice';
 
 const ChatPage = () => {
