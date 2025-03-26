@@ -25,7 +25,7 @@ const AuthWrapper = ({ children }) => {
   return children;
 };
 
-function App() {
+const App = () => {
   return (
     <ErrorBoundary> {/* 🔧 отлавливаем ошибки всего приложения */}
       <Router>

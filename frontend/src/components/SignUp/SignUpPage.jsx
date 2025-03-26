@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Card, Image, FormGroup } from 'react-bootstrap';
+import React, { useRef, useState } from 'react';
+import { Button, Form, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';

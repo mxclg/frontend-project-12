@@ -19,7 +19,7 @@ const messagesSlice = createSlice({
     addMessages: messagesAdapter.addMany,
     addMessage: messagesAdapter.addOne,
     sendMessage: (state, action) => {
-      const { socket, ...messageData } = action.payload;
+      const { ...messageData } = action.payload;
       messagesAdapter.addOne(state, {
         id: messageData.id || Date.now().toString(),
         ...messageData,
