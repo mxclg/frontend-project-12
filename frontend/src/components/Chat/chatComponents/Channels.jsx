@@ -78,7 +78,7 @@ const Channels = () => {
                           variant={channel.id === currentChannelId ? 'secondary' : 'light'}
                           className="rounded-0 border-start-0"
                           >
-                          <span className="visually-hidden">{t('ui.manageChannel')}</span>
+                          <span className="visually-hidden">{t('buttons.channelManagement')}</span>
                         </Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item onClick={() => handleOpenRenameModal(channel)}>
