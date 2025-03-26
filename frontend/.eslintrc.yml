@@ -31,10 +31,20 @@ rules:
   functional/no-try-statements: 0
   functional/no-throw-statements: 0
   functional/no-return-void: 0
-  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
-  react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
+  no-underscore-dangle:
+    - error
+    - allow:
+        - __filename
+        - __dirname
+  react/function-component-definition:
+    - error
+    - namedComponents: arrow-function
   testing-library/no-debug: 0
-  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  react/jsx-filename-extension:
+    - warn
+    - extensions:
+        - .js
+        - .jsx
   no-param-reassign:
     - error
     - props: true
@@ -42,6 +52,7 @@ rules:
         - state
 
 overrides:
-  - files: ['vite.config.js']
+  - files:
+      - vite.config.js
     rules:
       import/no-extraneous-dependencies: off
