@@ -59,6 +59,7 @@ const Add = ({ show, handleClose }) => {
                   {t('ui.nameChannel')}
                 </Form.Label>
                 <Field
+                  id="name"
                   name="name"
                   className="form-control"
                   placeholder={t('ui.nameChannel')}
