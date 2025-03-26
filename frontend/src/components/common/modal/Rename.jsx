@@ -54,9 +54,11 @@ const Rename = ({ show, handleClose, channel }) => {
         {({ isSubmitting }) => (
           <FormikForm>
             <Modal.Body>
-              <Form.Group>
+              <Form.Group controlId="name">
+                <Form.Label className="visually-hidden" htmlFor="name">
+                  {t('ui.nameChannel')}
+                </Form.Label>
                 <Field
-                  id="name"
                   name="name"
                   className="form-control"
                   placeholder={t('ui.nameChannel')}
