@@ -30,7 +30,6 @@ const AuthWrapper = ({ children }) => {
 const App = () => (
   <ErrorBoundary>
     {' '}
-    {/* 🔧 отлавливаем ошибки всего приложения */}
     <Router>
       <div className="h-100 d-flex flex-column">
         <Nav />
