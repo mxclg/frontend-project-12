@@ -29,9 +29,8 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannels: channelsAdapter.setAll,
-    addChannelDirectly: channelsAdapter.addOne,
-    renameChannelDirectly: channelsAdapter.updateOne,
-    removeChannelDirectly: channelsAdapter.removeOne,
+    addChannel: channelsAdapter.addOne,
+    renameChannel: channelsAdapter.updateOne,
     removeChannel: (state, { payload }) => {
       if (state.currentChannelId === payload) {
         state.currentChannelId = state.ids.length > 0 ? state.ids[0] : null;
@@ -65,7 +64,7 @@ const channelsSlice = createSlice({
       })
       .addCase(removeChannel.fulfilled, (state, { payload }) => {
         if (state.currentChannelId === payload) {
-          state.currentChannelId = '1';
+          state.currentChannelId = state.ids.length > 0 ? state.ids[0] : null;
         }
         channelsAdapter.removeOne(state, payload);
       });
