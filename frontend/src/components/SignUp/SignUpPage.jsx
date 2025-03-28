@@ -45,7 +45,7 @@ const SignUpPage = () => {
       setAuthFailed(false);
       formik.setSubmitting(true);
       try {
-        const response = await axios.post('/api/v1/signup', {
+        const response = await axios.post(routes.signupPath(), {
           username: values.username,
           password: values.password,
         });
