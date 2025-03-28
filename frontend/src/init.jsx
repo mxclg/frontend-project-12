@@ -20,7 +20,7 @@ leoProfanity.addDictionary('cleanWords', [...ru, ...en]);
 leoProfanity.loadDictionary('cleanWords');
 
 const rollbarConfig = {
-  accessToken: '8481e45bd3b543cc812f153f3fa045dd',
+  accessToken: import.meta.env.VITE_CHAT_APP_ROLLBAR_TOKEN,
   environment: 'production',
 };
 
