@@ -13,18 +13,18 @@ import App from './components/App.jsx';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 
-const i18n = i18next.createInstance();
-const ru = leoProfanity.getDictionary('ru');
-const en = leoProfanity.getDictionary('en');
-leoProfanity.addDictionary('cleanWords', [...ru, ...en]);
-leoProfanity.loadDictionary('cleanWords');
-
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_CHAT_APP_ROLLBAR_TOKEN,
   environment: 'production',
 };
 
 const init = async () => {
+  const i18n = i18next.createInstance();
+  const ru = leoProfanity.getDictionary('ru');
+  const en = leoProfanity.getDictionary('en');
+  leoProfanity.addDictionary('cleanWords', [...ru, ...en]);
+  leoProfanity.loadDictionary('cleanWords');
+
   await i18n.use(initReactI18next).init({
     resources,
     lng: 'ru',
