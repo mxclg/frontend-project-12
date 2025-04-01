@@ -4,8 +4,12 @@ import useAuth from '../../hooks/useAuth';
 import routes from '../../routes/routes';
 
 const PrivateRoute = ({ children }) => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, isAuthChecked } = useAuth();
   const location = useLocation();
+
+  if (!isAuthChecked) {
+    return null;
+  }
 
   return loggedIn
     ? children
